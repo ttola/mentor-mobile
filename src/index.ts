@@ -42,9 +42,17 @@ const server = new ApolloServer({
   resolvers,
   csrfPrevention: true,
   cache: "bounded",
+  onHealthCheck: () => {
+    return Promise.resolve();
+  },
 });
 
+const port = process.env["PORT"] || "8080";
+
 // The `listen` method launches a web server.
-server.listen().then(({ url }) => {
+server.listen({ port }).then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
+  console.log(
+    `Try your health check at: ${url}.well-known/apollo/server-health`
+  );
 });
